@@ -3,7 +3,7 @@ package courseWork1;
 public class Employee {
     private String fullname;
     private int department;
-    private int salary;
+    private int salary; // мы с бухгалтерией решили не работать с копейками
     private int id;
     private static int counterId;
 
