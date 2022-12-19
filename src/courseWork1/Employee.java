@@ -3,7 +3,7 @@ package courseWork1;
 public class Employee {
     private String fullname;
     private int department;
-    private int salary; // мы с бухгалтерией решили не работать с копейками
+    private int salary; // мы с бухгалтерией решили не работать с копейками и округлять любые изменения до целого.
     private int id;
     private static int counterId;
 
@@ -17,17 +17,17 @@ public class Employee {
         this.id = ++counterId;
     }
     public String getFullname() {
-        return fullname;
+        return this.fullname;
     }
     public int getDepartment(){
-        return department;
+        return this.department;
     }
     public int getSalary(){
-        return salary;
+        return this.salary;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setSalary(int salary) {
