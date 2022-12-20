@@ -16,6 +16,8 @@ public class Main {
         employeeBook.createEmployee("Глушко Владимир Сергеевич", 1 , 115600);
 
         employeeBook.printDepartmentsInfo();
-
+        employeeBook.changeSalary("Глушко Владимир Сергеевич", 35000);
+        employeeBook.printEmployeesInfo();
+        System.out.println("Больше всего получает : " + employeeBook.getEmployeeMaxSalary());
     }
 }

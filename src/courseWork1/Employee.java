@@ -1,5 +1,7 @@
 package courseWork1;
 
+import java.util.Objects;
+
 public class Employee {
     private String fullname;
     private int department;
@@ -43,4 +45,16 @@ public class Employee {
         return infoEmployees;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(fullname, employee.fullname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullname);
+    }
 }

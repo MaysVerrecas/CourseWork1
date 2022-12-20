@@ -68,19 +68,19 @@ public class EmployeeBook {
         }
     }
 
-    public void indexingSalary(double percentageIncrease) {
+    public void indexingSalary(double percentageIncrease) { // индексирует за в процентах
         double percent = percentageIncrease / 100; // переводим %
         for (Employee employee : employees) {
             if (employee != null) {
                 employee.setSalary((int) (employee.getSalary() + employee.getSalary()*percent));
-                //не будем высчитывать их копейки, переживут, но переделать не составит труда
+                //не будем высчитывать их копейки, переживут
             }
         }
     }
 
     // ниже методы принимающие номер отдела :
 
-    public Employee getDepartamentMinSalary(int department) { // поиск сотрудника с мин зп
+    public Employee getDepartamentMinSalary(int department) { // поиск сотрудника с мин зп в отделе
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
@@ -101,7 +101,7 @@ public class EmployeeBook {
         }
         return employees[counter];
     }
-    public Employee getDepartamentMaxSalary(int department) { // поиск сотрудника с макс зп
+    public Employee getDepartamentMaxSalary(int department) { // поиск сотрудника с макс зп в отделе
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
@@ -124,7 +124,7 @@ public class EmployeeBook {
 
         return employees[counter];
     }
-    public int departmentSalary(int department) {
+    public int departmentSalary(int department) { // затраты зп на отдел
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
@@ -138,7 +138,7 @@ public class EmployeeBook {
 
     }
 
-    public int counterDepartmentEmployee(int department) { //счетчик сотрудников в отделе
+    public int counterDepartmentEmployee(int department) { //счетчик сотрудников в отделе (доп метод для удобства)
         int counter = 0; // считаем колво сотрудников отдела
         for (Employee employee : employees) {
             if (employee != null && employee.getDepartment() == department) {
@@ -153,17 +153,17 @@ public class EmployeeBook {
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
-        if (counterDepartmentEmployee(department) == 0) {
+        if (counterDepartmentEmployee(department) == 0) { // избежать ошибки деления на 0
             throw new RuntimeException("В отделе никто не работает");
         }
         return (departmentSalary(department)*1.) / counterDepartmentEmployee(department);
     }
-    public void indexingDepartmentSalary(int department, double percentageIncrease) { // отдел и %
+    public void indexingDepartmentSalary(int department, double percentageIncrease) { // индексирует зп отделу в %
         double percent = percentageIncrease / 100; // переводим %
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
-        if (counterDepartmentEmployee(department) == 0) {
+        if (counterDepartmentEmployee(department) == 0) { // избежать ошибки деления на 0
             throw new RuntimeException("В отделе никто не работает");
         }
 
@@ -175,7 +175,7 @@ public class EmployeeBook {
         }
     }
 
-    public void infoDepartment(int department) {
+    public void infoDepartment(int department) { // печатает отделы и их сотрудников
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
@@ -216,13 +216,13 @@ public class EmployeeBook {
         }
     }
 
-    public void createEmployee(String fullname, int department, int salary) {
+    public void createEmployee(String fullname, int department, int salary) { // создание сотрудника в базу
         boolean flag = false;
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] == null) {
                 flag = true;
                 employees[i] = new Employee(fullname, department, salary);
-                break;
+                break; // видела, что используют return в подобных, но не понимаю почему, будет брейк
             }
         }
         if (flag == false) {
@@ -230,7 +230,7 @@ public class EmployeeBook {
         }
     }
 
-    public void deliteEmployee(int id) { //удаление по id
+    public void deliteEmployee(int id) { //удаление по id из массива сотрудников
         boolean flag = false;
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] != null && employees[i].getId() == id) {
@@ -243,7 +243,7 @@ public class EmployeeBook {
             System.out.println("Такого сотрудника не удалось найти");
         }
     }
-    public void deliteEmployee(String fullname) { //удаление по имени
+    public void deliteEmployee(String fullname) { //удаление по имени из массива сотрудников(переопределение удаления по id)
         boolean flag = false;
         for (int i = 0; i < employees.length; i++) {
             if (employees[i] != null && employees[i].getFullname().equals(fullname)) {
@@ -288,9 +288,10 @@ public class EmployeeBook {
     }
     public void printDepartmentsInfo() { // печатает всех сотрудников по отделу
          for (int j = 1; j <= 5; j++) {
+             System.out.println("Отдел № " + j);
              for (int i = 0; employees[i] != null; i++) {
                  if (employees[i] != null && employees[i].getDepartment() == j) {
-                     System.out.println("Отдел № " + j + " "+ employees[i].getFullname());
+                     System.out.println(employees[i].getFullname());
                  }
              }
              System.out.println();
