@@ -1,8 +1,4 @@
-import courseWork1.Employee;
 import courseWork1.EmployeeBook;
-
-import static java.lang.Double.NaN;
-import static java.lang.Double.sum;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,10 +10,5 @@ public class Main {
         employeeBook.createEmployee("Гитлер Адольф Алоисович", 3, 45600);
         employeeBook.createEmployee("Покер Фейс Альбертович", 5 , 54320);
         employeeBook.createEmployee("Глушко Владимир Сергеевич", 1 , 115600);
-
-        employeeBook.printDepartmentsInfo();
-        employeeBook.changeSalary("Глушко Владимир Сергеевич", 35000);
-        employeeBook.printEmployeesInfo();
-        System.out.println("Больше всего получает : " + employeeBook.getEmployeeMaxSalary());
     }
 }

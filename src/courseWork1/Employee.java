@@ -6,7 +6,7 @@ public class Employee {
     private String fullname;
     private int department;
     private int salary; // мы с бухгалтерией решили не работать с копейками и округлять любые изменения до целого.
-    private int id;
+    private final int id;
     private static int counterId;
 
     public Employee(String fullname, int department, int salary) {
@@ -41,8 +41,7 @@ public class Employee {
     }
     @Override
     public String toString () {
-        String infoEmployees  = String.format("id Сотрудника :%d Сотрудник : %s, Отдел №%d, Зароботная плата: %d",id, fullname, department, salary);
-        return infoEmployees;
+        return String.format("id Сотрудника :%d Сотрудник : %s, Отдел №%d, Зароботная плата: %d",id, fullname, department, salary);
     }
 
     @Override
@@ -50,11 +49,11 @@ public class Employee {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(fullname, employee.fullname);
+        return id == employee.id && Objects.equals(fullname, employee.fullname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullname);
+        return Objects.hash(fullname, id);
     }
 }

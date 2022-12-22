@@ -1,7 +1,7 @@
 package courseWork1;
 
 public class EmployeeBook {
-    private  Employee[] employees = new Employee[10];
+    private final  Employee[] employees = new Employee[10];
 
     public void printEmployeesInfo() { // печатает инфу по всем сотрудникам
         for (Employee employee : employees) {
@@ -11,7 +11,7 @@ public class EmployeeBook {
         }
         System.out.println();
     }
-    public int monthlySalaryCosts () { // все расходы на зп в месяц
+    public int monthlySalaryCosts () {// все расходы на зп в месяц
         int sum = 0;
         for (Employee employee : employees) {
             if (employee != null) { // если в массиве заполнены не все сотрудники
@@ -22,44 +22,39 @@ public class EmployeeBook {
     }
 
     public Employee getEmployeeMinSalary() { // поиск сотрудника с мин зп
+        if (counterEmployee() == 0) {
+            throw new RuntimeException("У вас нет сотрудников.");
+        }
         int min = Integer.MAX_VALUE;
         int counter = -1; // счетчик для поиска номера элемента в массиве
-        int i = 0;
-        for ( ;i < employees.length; i++) {
-            if (employees[i] != null) {
-                if (employees[i].getSalary() < min) {
-                    min = employees[i].getSalary();
-                    counter = i;
-                }
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null && employees[i].getSalary() < min) {
+                min = employees[i].getSalary();
+                counter = i;
             }
         }
         return employees[counter];
     }
     public Employee getEmployeeMaxSalary() { // поиск макс зп
+        if (counterEmployee() == 0) {
+            throw new RuntimeException("У вас нет сотрудников.");
+        }
         int max = Integer.MIN_VALUE;
         int counter = -1;
-        int i = 0;
-        for ( ;i < employees.length; i++) {
-            if (employees[i] != null) {
-                if (employees[i].getSalary() > max) {
-                    max = employees[i].getSalary();
-                    counter = i;
-                }
+        for (int i = 0 ;i < employees.length; i++) {
+            if (employees[i] != null && employees[i].getSalary() > max) {
+                max = employees[i].getSalary();
+                counter = i;
             }
         }
         return employees[counter];
     }
 
     public double getMidleEmployeeSalary() { // средние затраты в месяц на зарплату
-        int sum = monthlySalaryCosts(); // все затраты
-        int counter = 0; // счетчик сколько элементов в массиве заполнено
-        for (int i = 0; i < employees.length; i++) {
-            if (employees[i] != null) {
-                counter++;
-            }
-        } // преобразовали сум в дабл и поделили на кол-во заполненных сотрудников
-        return (sum*1.) / counter;
+        double sum = monthlySalaryCosts()*1.; // все затраты
+        return sum / counterEmployee();
     }
+
     public void printAllFullnames() { //просто выводит имена сотрудников
         for (Employee employee : employees) {
             if (employee != null) {
@@ -84,20 +79,17 @@ public class EmployeeBook {
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
-
+        if (counterDepartmentEmployee(department) == 0) {
+            throw new RuntimeException("В отделе никто не работает");
+        }
         int min = Integer.MAX_VALUE;
         int counter = -1; // счетчик для поиска номера элемента в массиве.
         int i = 0;
         for ( ;i < employees.length; i++) {
-            if (employees[i] != null && employees[i].getDepartment() == department) {
-                if (employees[i].getSalary() < min) {
-                    min = employees[i].getSalary();
-                    counter = i;
-                }
+            if (employees[i] != null && employees[i].getDepartment() == department && employees[i].getSalary() < min) {
+                min = employees[i].getSalary();
+                counter = i;
             }
-        }
-        if (counter > 0) {
-            throw new RuntimeException("В отделе никто не работает");
         }
         return employees[counter];
     }
@@ -111,17 +103,13 @@ public class EmployeeBook {
 
         int max = Integer.MIN_VALUE;
         int counter = -1; // счетчик для поиска номера элемента в массиве.
-        int i = 0;
 
-        for ( ;i < employees.length; i++) {
-            if (employees[i] != null && employees[i].getDepartment() == department) {
-                if (employees[i].getSalary() > max) {
-                    max = employees[i].getSalary();
-                    counter = i;
-                }
+        for ( int i = 0; i < employees.length; i++) {
+            if (employees[i] != null && employees[i].getDepartment() == department && employees[i].getSalary() > max) {
+                max = employees[i].getSalary();
+                counter = i;
             }
         }
-
         return employees[counter];
     }
     public int departmentSalary(int department) { // затраты зп на отдел
@@ -147,16 +135,27 @@ public class EmployeeBook {
         }
         return counter;
     }
+    public int counterEmployee() { //счетчик сотрудников  массиве (доп метод для удобства)
+        int counter = 0; // считаем колво сотрудников отдела
+        for (Employee employee : employees) {
+            if (employee != null) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
 
     public double midleDepartmentSalary (int department) { // средняя зп по отделу
 
         if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Такого отдела не существует");
         }
-        if (counterDepartmentEmployee(department) == 0) { // избежать ошибки деления на 0
+        int counterDepartmentEmployee = counterDepartmentEmployee(department);
+        if (counterDepartmentEmployee == 0) { // избежать ошибки деления на 0
             throw new RuntimeException("В отделе никто не работает");
         }
-        return (departmentSalary(department)*1.) / counterDepartmentEmployee(department);
+        return (departmentSalary(department)*1.) / counterDepartmentEmployee;
     }
     public void indexingDepartmentSalary(int department, double percentageIncrease) { // индексирует зп отделу в %
         double percent = percentageIncrease / 100; // переводим %
@@ -225,7 +224,7 @@ public class EmployeeBook {
                 break; // видела, что используют return в подобных, но не понимаю почему, будет брейк
             }
         }
-        if (flag == false) {
+        if (!flag) {
             System.out.println("Создание объекта не возможно, пустых ячеек нет");
         }
     }
@@ -239,7 +238,7 @@ public class EmployeeBook {
                 break;
             }
         }
-        if (flag == false) {
+        if (!flag) {
             System.out.println("Такого сотрудника не удалось найти");
         }
     }
@@ -252,11 +251,10 @@ public class EmployeeBook {
                 break;
             }
         }
-        if (flag == false) {
+        if (!flag) {
             System.out.println("Такого сотрудника не удалось найти");
         }
     }
-
     public void changeSalary(String fullname, int newSalary) { // меняет зп сотрудника
         boolean flag = false;
         for (int i = 0; i < employees.length; i++) {
@@ -266,7 +264,7 @@ public class EmployeeBook {
                 break;
             }
         }
-        if (flag == false) {
+        if (!flag) {
             System.out.println("Такого сотрудника не удалось найти");
         }
     }
@@ -282,7 +280,7 @@ public class EmployeeBook {
                 break;
             }
         }
-        if (flag == false) {
+        if (!flag) {
             System.out.println("Такого сотрудника не удалось найти");
         }
     }
